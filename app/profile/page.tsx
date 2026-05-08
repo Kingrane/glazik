@@ -155,7 +155,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    background: "transparent",
+    background: "linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0))",
     borderBottom: "1px solid var(--border-subtle)",
     backdropFilter: "blur(8px)",
   },

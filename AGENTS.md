@@ -19,9 +19,9 @@ Language: Russian UI
 sound toggle, theme toggle, profile
 
 ## Colors (акценты карточек на главной)
-- Цветочки: #FDC5F5 (bg), #D81159 (text)
-- Светофор F1: #FFD6CC (bg), #FF6B35 (text)
-- Угадай цвет: #DFFFD6 (bg), #2EC4B6 (text)
+- Цветочки: #FFE3F1 (bg), #C2185B (text)
+- Светофор F1: #FFE5D2 (bg), #EF5A29 (text)
+- Угадай цвет: #E3FAF3 (bg), #1FAE9A (text)
 
 ## Game modes — 3 cards on landing
 1. Цветочки — random flowers 10–300, guess count, score by error, 5 rounds
@@ -39,12 +39,12 @@ sound toggle, theme toggle, profile
 - No backend, no auth
 
 ## UI details
-- Header: transparent, 64px height, logo 28px
+- Header: transparent, 64px height, logo 28px, subtle blur
 - Nav: линия снизу при hover (через ::after)
 - Cards: min-height 240px, border 1.5px
 - Buttons icon: scale 1.05 на hover, 0.95 на active
 - Border: 0.10/0.18/0.30 (subtle/medium/strong)
-- Background: radial gradient с зеленым и фиолетовым (еле заметно)
+- Background: многослойные мягкие радиальные градиенты + лёгкий шум
 - Формат времени: X.Xc (например 5.0c)
 - Во всех играх: кнопка выхода (стрелка назад) всегда активна, можно выйти в любой момент
 - Заголовок игры: "glazik game"
@@ -69,7 +69,7 @@ sound toggle, theme toggle, profile
 - большое поле 400x400 показывается 5 сек
 - таймер сбоку в формате X.Xc, не двигает поле, цвет черный (#1A1916)
 - при выборе: большой превью 200x200
-- результат: два блока 180x180
+- результат: два блока 240x240 в одной строке, под каждым RGB
 - активная кнопка выхода (стрелка назад) всегда доступна
 
 ## Components

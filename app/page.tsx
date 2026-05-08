@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Flower, Zap, Palette, Sun, Moon, Volume2, VolumeX, User } from "lucide-react";
 import { useTheme } from "./components/ThemeProvider";
 
@@ -55,16 +55,16 @@ export default function Home() {
         </nav>
 
         <div style={styles.iconButtons}>
-          <button 
-            onClick={() => setSound(!sound)} 
+          <button
+            onClick={() => setSound(!sound)}
             className="icon-btn"
             style={styles.iconButton}
             aria-label={sound ? "Выключить звук" : "Включить звук"}
           >
             {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
           </button>
-          <button 
-            onClick={toggleTheme} 
+          <button
+            onClick={toggleTheme}
             className="icon-btn"
             style={styles.iconButton}
             aria-label={theme === "light" ? "Тёмная тема" : "Светлая тема"}
@@ -79,15 +79,15 @@ export default function Home() {
 
       <main className="main">
         <div style={styles.hero}>
-          <span className="hero-label">🧠 тренируй восприятие</span>
+          <span className="hero-label">тренируй восприятие :D</span>
           <h1 className="hero-title">мини-игры для глаза и реакции</h1>
           <p className="hero-subtitle">5 раундов · очки · личный рекорд</p>
         </div>
 
         <div className="cards-grid">
           {games.map(game => (
-            <a 
-              key={game.id} 
+            <a
+              key={game.id}
               href={`/game/${game.id}`}
               className="card"
               style={{

@@ -107,6 +107,10 @@ export default function ColorGame() {
     return "#" + [r, g, b].map(x => x.toString(16).padStart(2, "0")).join("");
   };
 
+  const rgbLabel = (r: number, g: number, b: number) => {
+    return `RGB ${r} ${g} ${b}`;
+  };
+
   const formatTime = (ms: number) => {
     return (Math.max(0, ms) / 1000).toFixed(1);
   };
@@ -303,16 +307,22 @@ export default function ColorGame() {
           </div>
 
           <div style={styles.resultColors}>
-            <div style={styles.resultColorLabel}>Правильный цвет</div>
-            <div style={{
-              ...styles.bigColorResult,
-              background: rgbToHex(targetColor.r, targetColor.g, targetColor.b),
-            }} />
-            <div style={styles.yourColorLabel}>Твой цвет</div>
-            <div style={{
-              ...styles.bigColorResult,
-              background: rgbToHex(userColor.r, userColor.g, userColor.b),
-            }} />
+            <div style={styles.resultColorCard}>
+              <div style={styles.resultColorLabel}>Правильный цвет</div>
+              <div style={{
+                ...styles.bigColorResult,
+                background: rgbToHex(targetColor.r, targetColor.g, targetColor.b),
+              }} />
+              <div style={styles.resultRgb}>{rgbLabel(targetColor.r, targetColor.g, targetColor.b)}</div>
+            </div>
+            <div style={styles.resultColorCard}>
+              <div style={styles.resultColorLabel}>Твой цвет</div>
+              <div style={{
+                ...styles.bigColorResult,
+                background: rgbToHex(userColor.r, userColor.g, userColor.b),
+              }} />
+              <div style={styles.resultRgb}>{rgbLabel(userColor.r, userColor.g, userColor.b)}</div>
+            </div>
           </div>
 
           <div style={styles.totalScore}>
@@ -487,7 +497,7 @@ const styles: Record<string, React.CSSProperties> = {
     height: "400px",
     borderRadius: "var(--radius-xl)",
     border: "1px solid rgba(26,25,22,0.12)",
-    boxShadow: "0 14px 40px rgba(26,25,22,0.18)",
+    boxShadow: "0 16px 44px rgba(26,25,22,0.2)",
     flexShrink: 0,
   },
   timerBox: {
@@ -597,7 +607,7 @@ const styles: Record<string, React.CSSProperties> = {
     border: "1.5px solid var(--border-subtle)",
     borderRadius: "var(--radius-xl)",
     padding: "48px",
-    maxWidth: "480px",
+    maxWidth: "720px",
     width: "100%",
     boxShadow: "var(--shadow-elevated)",
     textAlign: "center",
@@ -615,28 +625,35 @@ const styles: Record<string, React.CSSProperties> = {
   },
   resultColors: {
     display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    gap: "var(--space-8)",
+    marginTop: "var(--space-6)",
+    flexWrap: "wrap",
+  },
+  resultColorCard: {
+    display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "var(--space-4)",
-    marginTop: "var(--space-6)",
+    gap: "var(--space-2)",
   },
   resultColorLabel: {
     fontFamily: "var(--font-body)",
     fontSize: "13px",
     color: "var(--text-tertiary)",
   },
+  resultRgb: {
+    fontFamily: "var(--font-mono)",
+    fontSize: "12px",
+    color: "var(--text-secondary)",
+    letterSpacing: "0.02em",
+  },
   bigColorResult: {
-    width: "180px",
-    height: "180px",
+    width: "240px",
+    height: "240px",
     borderRadius: "var(--radius-xl)",
     border: "1px solid var(--border-subtle)",
     boxShadow: "var(--shadow-elevated)",
-  },
-  yourColorLabel: {
-    fontFamily: "var(--font-body)",
-    fontSize: "13px",
-    color: "var(--text-tertiary)",
-    marginTop: "var(--space-2)",
   },
   totalScore: {
     marginTop: "var(--space-6)",
