@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# glazik
 
-## Getting Started
+> мини-игры для тренировки восприятия, реакции и памяти
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-App_Router-black?style=flat-square)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square)
+![CSS](https://img.shields.io/badge/CSS-no_Tailwind-blueviolet?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+
+---
+
+## Что это
+
+**glazik** — небольшой сайт с мини-играми, которые проверяют насколько хорошо ты замечаешь, считаешь и реагируешь. Три режима, 5 раундов в каждом, личный рекорд сохраняется локально.
+
+Вдохновлено [dialed.gg](https://dialed.gg).
+
+---
+
+## Режимы игры
+
+### 🌸 Цветочки
+На экране мелькает куча цветочков — угадай сколько их было. Диапазон от 10 до 300. Чем точнее ответ, тем больше очков. 5 раундов.
+
+### 🚦 Светофор F1
+Пять огней загораются один за другим. Держи нервы — в случайный момент они гаснут. Кликни как можно быстрее. Фальстарт = 0 очков в раунде.
+
+### 🎨 Угадай цвет
+5 секунд смотришь на цвет. Потом пытаешься воссоздать его по RGB-ползункам. Счёт — по расстоянию между цветами.
+
+---
+
+## Стек
+
+- **Next.js** (App Router) + **React**
+- Чистый CSS с custom properties — без Tailwind
+- Google Fonts: Dela Gothic One, Geologica, Golos Text, Climate Crisis
+- Хранилище: только `localStorage`, никакого бэкенда
+
+---
+
+## Запуск
 
 ```bash
+git clone https://github.com/твой-ник/glazik.git
+cd glazik
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Откроется на [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Структура
 
-## Learn More
+```
+src/
+└── app/
+    ├── layout.tsx          # ThemeProvider, шрифты
+    ├── globals.css         # CSS-переменные, токены
+    ├── page.tsx            # Лендинг с 3 карточками
+    ├── flowers/            # Режим: цветочки
+    ├── f1/                 # Режим: светофор F1
+    └── color/              # Режим: угадай цвет
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Профиль
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Никакой регистрации. Всё хранится в `localStorage`:
+- никнейм
+- лучший счёт по каждому режиму
+- последние 10 игр
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Скоринг
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Режим | Формула |
+|---|---|
+| Цветочки | `max(0, 100 − abs_error% × 100)` |
+| Светофор F1 | `max(0, 1000 − reaction_ms)`, фальстарт = 0 |
+| Угадай цвет | `max(0, 100 − color_distance_normalized × 100)` |
+
+---
+
+## Лицензия
+
+MIT
