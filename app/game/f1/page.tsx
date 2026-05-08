@@ -345,6 +345,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
     gap: "var(--space-8)",
     marginTop: "var(--space-6)",
+    flexWrap: "wrap",
   },
   ruleItem: {
     display: "flex",
@@ -398,7 +399,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     justifyContent: "center",
     gap: "var(--space-8)",
-    boxShadow: "var(--shadow-elevated)",
+    boxShadow: "0 16px 40px rgba(26,25,22,0.16)",
   },
   lightsContainer: {
     display: "flex",
@@ -444,6 +445,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: "var(--font-mono)",
     fontSize: "var(--text-xl)",
     color: "var(--text-tertiary)",
+    fontVariantNumeric: "tabular-nums",
   },
   messageText: {
     fontFamily: "var(--font-body)",

@@ -1,0 +1,19 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="g5" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(60 60) rotate(90) scale(52)">
+      <stop stop-color="#FFFFFF" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g>
+    <ellipse cx="60" cy="16" rx="18" ry="22" fill="#2D9B6B"/>
+    <ellipse cx="92" cy="28" rx="18" ry="22" fill="#2D9B6B" transform="rotate(40 92 28)"/>
+    <ellipse cx="104" cy="58" rx="18" ry="22" fill="#2D9B6B" transform="rotate(80 104 58)"/>
+    <ellipse cx="92" cy="92" rx="18" ry="22" fill="#2D9B6B" transform="rotate(140 92 92)"/>
+    <ellipse cx="60" cy="104" rx="18" ry="22" fill="#2D9B6B" transform="rotate(180 60 104)"/>
+    <ellipse cx="28" cy="92" rx="18" ry="22" fill="#2D9B6B" transform="rotate(220 28 92)"/>
+    <ellipse cx="16" cy="58" rx="18" ry="22" fill="#2D9B6B" transform="rotate(280 16 58)"/>
+    <circle cx="60" cy="60" r="19" fill="#FFE066"/>
+    <circle cx="60" cy="60" r="24" fill="url(#g5)"/>
+  </g>
+</svg>

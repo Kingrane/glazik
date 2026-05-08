@@ -192,12 +192,12 @@ export default function ColorGame() {
         </header>
 
         <main style={styles.gameMain}>
-          <div style={styles.gameAreaWithTimer}>
+          <div className="game-layout game-layout--color">
             <div style={{
               ...styles.bigColorBox,
               background: rgbToHex(targetColor.r, targetColor.g, targetColor.b),
             }} />
-            <div style={styles.timerBox}>
+            <div className="timer-stack" style={styles.timerBox}>
               <span style={styles.timerLabel}>Осталось</span>
               <span style={styles.timerValueBlack}>{formatTime(showTime)}c</span>
             </div>
@@ -418,6 +418,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
     gap: "var(--space-8)",
     marginTop: "var(--space-6)",
+    flexWrap: "wrap",
   },
   ruleItem: {
     display: "flex",
@@ -485,16 +486,16 @@ const styles: Record<string, React.CSSProperties> = {
     width: "400px",
     height: "400px",
     borderRadius: "var(--radius-xl)",
-    border: "1px solid var(--border-subtle)",
-    boxShadow: "var(--shadow-elevated)",
+    border: "1px solid rgba(26,25,22,0.12)",
+    boxShadow: "0 14px 40px rgba(26,25,22,0.18)",
     flexShrink: 0,
   },
   timerBox: {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingTop: "20px",
-    minWidth: "100px",
+    paddingTop: "12px",
+    width: "140px",
   },
   timerLabel: {
     fontFamily: "var(--font-body)",
@@ -505,6 +506,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: "var(--font-display)",
     fontSize: "48px",
     color: "#1A1916",
+    fontVariantNumeric: "tabular-nums",
   },
   rememberText: {
     fontFamily: "var(--font-heading)",

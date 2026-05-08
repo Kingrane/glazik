@@ -4,37 +4,34 @@ import { useState, useEffect, useRef } from "react";
 import { Flower, ArrowLeft, Plus, Minus } from "lucide-react";
 import { useProfile } from "../../components/useProfile";
 
-const FlowerSVG = ({ type, size, color }: { type: number; size: number; color: string }) => {
-  if (type === 1) {
-    return (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="6" fill={color} />
-        <circle cx="12" cy="6" r="3" fill={color} opacity="0.8" />
-        <circle cx="16" cy="9" r="3" fill={color} opacity="0.8" />
-        <circle cx="16" cy="14" r="3" fill={color} opacity="0.8" />
-        <circle cx="12" cy="18" r="3" fill={color} opacity="0.8" />
-        <circle cx="8" cy="14" r="3" fill={color} opacity="0.8" />
-        <circle cx="8" cy="9" r="3" fill={color} opacity="0.8" />
-        <circle cx="12" cy="12" r="2.5" fill="#FFE066" />
-      </svg>
-    );
-  }
-  if (type === 2) {
-    return (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-        <ellipse cx="12" cy="14" rx="3" ry="6" fill={color} />
-        <ellipse cx="8" cy="10" rx="3" ry="5" fill={color} transform="rotate(-30 8 10)" />
-        <ellipse cx="16" cy="10" rx="3" ry="5" fill={color} transform="rotate(30 16 10)" />
-        <circle cx="12" cy="8" r="2.5" fill="#FFE066" />
-      </svg>
-    );
-  }
+const flowerShapes = ["bloom-1", "bloom-2", "bloom-3", "bloom-4", "bloom-5"] as const;
+const flowerShadow = [
+  "rgba(241, 91, 181, 0.4)",
+  "rgba(255, 140, 66, 0.35)",
+  "rgba(46, 196, 182, 0.35)",
+  "rgba(75, 180, 255, 0.35)",
+  "rgba(123, 211, 137, 0.35)",
+];
+
+const FlowerSVG = ({ variant, size }: { variant: number; size: number }) => {
+  const flowerIndex = Math.abs(variant) % flowerShapes.length;
+  const fileName = flowerShapes[flowerIndex];
+  const shadow = flowerShadow[flowerIndex] ?? "rgba(0,0,0,0.15)";
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <path d="M12 3C12 3 8 8 8 12C8 16 12 18 12 18C12 18 16 16 16 12C16 8 12 3 12 3Z" fill={color} />
-      <path d="M12 6C12 6 10 9 10 12C10 14 12 15 12 15C12 15 14 14 14 12C14 9 12 6 12 6Z" fill="#FFE066" />
-      <line x1="12" y1="18" x2="12" y2="22" stroke="#2D9B6B" strokeWidth="1.5" />
-    </svg>
+    <img
+      src={`/assets/flowers/${fileName}.svg`}
+      alt=""
+      width={size}
+      height={size}
+      style={{
+        display: "block",
+        width: size,
+        height: size,
+        objectFit: "contain",
+        filter: `drop-shadow(0 3px 8px ${shadow})`
+      }}
+      draggable={false}
+    />
   );
 };
 
@@ -47,7 +44,7 @@ export default function FlowersGame() {
   const [totalScore, setTotalScore] = useState(0);
   const [flowerCount, setFlowerCount] = useState(0);
   const [userGuess, setUserGuess] = useState(150);
-  const [flowers, setFlowers] = useState<{ x: number; y: number; size: number; type: number; color: string }[]>([]);
+  const [flowers, setFlowers] = useState<{ x: number; y: number; size: number; rotation: number; variant: number }[]>([]);
   const [showTime, setShowTime] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -60,14 +57,16 @@ export default function FlowersGame() {
     setFlowerCount(count);
 
     const newFlowers = [];
-    const colors = ["#2D9B6B", "#3DB87C", "#4BC98D", "#5DD99E", "#6EEAAF"];
+    const fieldSize = 420;
+    const padding = 10;
     for (let i = 0; i < count; i++) {
+      const size = Math.random() * 16 + 18;
       newFlowers.push({
-        x: Math.random() * 360 + 30,
-        y: Math.random() * 360 + 30,
-        size: Math.random() * 14 + 18,
-        type: Math.floor(Math.random() * 3) + 1,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        x: Math.random() * (fieldSize - size - padding * 2) + padding,
+        y: Math.random() * (fieldSize - size - padding * 2) + padding,
+        size,
+        rotation: Math.random() * 360,
+        variant: Math.floor(Math.random() * flowerShapes.length),
       });
     }
     setFlowers(newFlowers);
@@ -231,17 +230,25 @@ export default function FlowersGame() {
         </header>
 
         <main style={styles.gameMain}>
-          <div style={styles.gameAreaWrapper}>
+          <div className="game-layout game-layout--flowers">
             <div style={styles.flowersBox}>
-              <svg width="420" height="420" style={styles.flowersSvg}>
+              <div style={styles.flowersCanvas}>
                 {flowers.map((f, i) => (
-                  <g key={i} style={{ transform: `translate(${f.x}px, ${f.y}px)` }}>
-                    <FlowerSVG type={f.type} size={f.size} color={f.color} />
-                  </g>
+                  <div
+                    key={i}
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      top: 0,
+                      transform: `translate(${f.x}px, ${f.y}px) rotate(${f.rotation}deg)`,
+                    }}
+                  >
+                    <FlowerSVG variant={f.variant} size={f.size} />
+                  </div>
                 ))}
-              </svg>
+              </div>
             </div>
-            <div style={styles.timerBox}>
+            <div className="timer-stack" style={styles.timerBox}>
               <span style={styles.timerLabel}>Осталось</span>
               <span style={styles.timerValue}>{formatTime(showTime)}c</span>
             </div>
@@ -449,6 +456,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
     gap: "var(--space-8)",
     marginTop: "var(--space-6)",
+    flexWrap: "wrap",
   },
   ruleItem: {
     display: "flex",
@@ -508,36 +516,34 @@ const styles: Record<string, React.CSSProperties> = {
   gameAreaWithTimer: {
     display: "flex",
     alignItems: "flex-start",
-    gap: "40px",
-    minWidth: "540px",
-  },
-  gameAreaWrapper: {
-    minWidth: "540px",
-    display: "flex",
-    alignItems: "flex-start",
-    gap: "40px",
+    gap: "32px",
+    width: "100%",
+    maxWidth: "680px",
   },
   flowersBox: {
     width: "420px",
     height: "420px",
-    background: "#1A1916",
+    background: "#151312",
     borderRadius: "var(--radius-xl)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+    boxShadow: "0 12px 36px rgba(26,25,22,0.28)",
     overflow: "hidden",
     flexShrink: 0,
+    position: "relative",
+    border: "1px solid rgba(255,255,255,0.06)",
   },
-  flowersSvg: {
+  flowersCanvas: {
     position: "absolute",
+    inset: 0,
   },
   timerBox: {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingTop: "20px",
-    minWidth: "100px",
+    paddingTop: "12px",
+    minWidth: "120px",
   },
   timerLabel: {
     fontFamily: "var(--font-body)",
@@ -548,6 +554,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: "var(--font-display)",
     fontSize: "48px",
     color: "#1A1916",
+    fontVariantNumeric: "tabular-nums",
   },
   guessCard: {
     background: "var(--bg-surface)",

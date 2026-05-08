@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useState, useEffect } from "react";
 import { Flower, Zap, Palette, Sun, Moon, Volume2, VolumeX, User } from "lucide-react";
 import { useTheme } from "./components/ThemeProvider";
@@ -81,9 +79,9 @@ export default function Home() {
 
       <main className="main">
         <div style={styles.hero}>
-          <span style={styles.heroLabel}>🧠 тренируй восприятие</span>
+          <span className="hero-label">🧠 тренируй восприятие</span>
           <h1 className="hero-title">мини-игры для глаза и реакции</h1>
-          <p style={styles.heroSubtitle}>5 раундов · очки · личный рекорд</p>
+          <p className="hero-subtitle">5 раундов · очки · личный рекорд</p>
         </div>
 
         <div className="cards-grid">
@@ -108,6 +106,7 @@ export default function Home() {
                 ...styles.cardTag,
                 background: "rgba(255,255,255,0.7)",
                 color: `var(--accent-${game.color})`,
+                marginTop: "auto",
               }}>
                 {game.tag}
               </span>
@@ -155,19 +154,6 @@ const styles: Record<string, React.CSSProperties> = {
   hero: {
     textAlign: "center",
     marginBottom: "var(--space-12)",
-  },
-  heroLabel: {
-    fontFamily: "var(--font-body)",
-    fontSize: "15px",
-    color: "var(--text-tertiary)",
-    letterSpacing: "1px",
-    textTransform: "uppercase",
-  },
-  heroSubtitle: {
-    fontFamily: "var(--font-body)",
-    fontSize: "18px",
-    color: "var(--text-secondary)",
-    marginTop: "var(--space-3)",
   },
   card: {
     background: "var(--bg-surface)",

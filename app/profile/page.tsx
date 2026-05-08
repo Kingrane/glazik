@@ -155,8 +155,9 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    background: "var(--bg-surface)",
+    background: "transparent",
     borderBottom: "1px solid var(--border-subtle)",
+    backdropFilter: "blur(8px)",
   },
   backBtn: {
     width: "40px",
@@ -192,7 +193,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    boxShadow: "var(--shadow-card)",
+    boxShadow: "var(--shadow-elevated)",
   },
   avatar: {
     width: "80px",
@@ -274,6 +275,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    boxShadow: "0 8px 20px rgba(26,25,22,0.08)",
   },
   statLabel: {
     fontFamily: "var(--font-body)",
