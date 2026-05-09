@@ -3,9 +3,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Zap, ArrowLeft } from "lucide-react";
 import { useProfile } from "../../components/useProfile";
+import { useLanguage } from "../../components/LanguageProvider";
 
 export default function F1Game() {
   const { saveScore } = useProfile();
+  const { t, language } = useLanguage();
   const [gameState, setGameState] = useState<"intro" | "lights" | "ready" | "go" | "result">("intro");
   const [round, setRound] = useState(1);
   const [score, setScore] = useState(0);
@@ -59,7 +61,7 @@ export default function F1Game() {
           
           timeoutRef.current = setTimeout(() => {
             if (gameState !== "result") {
-              setMessage("Промах! (время вышло)");
+              setMessage(language === "ru" ? "Промах! (время вышло)" : "Miss! (time's up)");
               setGameState("result");
               setScore(0);
             }
@@ -93,7 +95,7 @@ export default function F1Game() {
 
     if (gameState === "lights" && !lightsReady) {
       setFalseStart(true);
-      setMessage("Фальстарт!");
+      setMessage(language === "ru" ? "Фальстарт!" : "False start!");
       setGameState("result");
       setScore(0);
       return;
@@ -146,28 +148,29 @@ export default function F1Game() {
               <Zap size={40} style={{ color: "var(--accent-f1)" }} />
             </div>
             <h1 style={{ ...styles.gameTitleText, color: "var(--accent-f1)" }}>
-              Светофор F1
+              {t.game.f1.title}
             </h1>
             <p style={styles.introDesc}>
-              Жди, пока загорятся все 5 огней. Как только погаснут — жми как можно быстрее!
-              Фальстарт = 0 очков.
+              {language === "ru" 
+                ? "Жди, пока загорятся все 5 огней. Как только погаснут — жми как можно быстрее! Фальстарт = 0 очков."
+                : "Wait for all 5 lights to turn on. As soon as they go out — press as fast as you can! False start = 0 points."}
             </p>
             <div style={styles.rulesList}>
               <div style={styles.ruleItem}>
                 <span style={styles.ruleNumber}>5</span>
-                <span style={styles.ruleText}>раундов</span>
+                <span style={styles.ruleText}>{language === "ru" ? "раундов" : "rounds"}</span>
               </div>
               <div style={styles.ruleItem}>
-                <span style={styles.ruleNumber}>5 огней</span>
-                <span style={styles.ruleText}>зажигаются</span>
+                <span style={styles.ruleNumber}>5 {language === "ru" ? "огней" : "lights"}</span>
+                <span style={styles.ruleText}>{language === "ru" ? "зажигаются" : "turn on"}</span>
               </div>
               <div style={styles.ruleItem}>
                 <span style={styles.ruleNumber}>1000</span>
-                <span style={styles.ruleText}>макс очков</span>
+                <span style={styles.ruleText}>{language === "ru" ? "макс очков" : "max pts"}</span>
               </div>
             </div>
             <button onClick={startGame} style={styles.playBtn}>
-              начать игру
+              {language === "ru" ? "начать игру" : "start game"}
             </button>
           </div>
         </main>
@@ -182,9 +185,9 @@ export default function F1Game() {
           <ArrowLeft size={22} />
         </button>
         <div style={styles.gameTitle}>
-          {gameState === "result" ? "Результат" : `Раунд ${round}/${maxRounds}`}
+          {gameState === "result" ? t.game.f1.results : `${t.game.f1.round} ${round}/${maxRounds}`}
         </div>
-        <div style={styles.scoreDisplay}>{totalScore} очков</div>
+        <div style={styles.scoreDisplay}>{totalScore} {language === "ru" ? "очков" : "pts"}</div>
       </header>
 
       <main style={styles.gameMain}>
@@ -205,14 +208,14 @@ export default function F1Game() {
           
           <div style={styles.messageArea}>
             {gameState === "lights" && !lightsReady && (
-              <p style={styles.waitText}>Зажигаются...</p>
+              <p style={styles.waitText}>{language === "ru" ? "Зажигаются..." : "Turning on..."}</p>
             )}
             {gameState === "lights" && lightsReady && (
-              <p style={styles.readyText}>Жди...</p>
+              <p style={styles.readyText}>{t.game.f1.wait}</p>
             )}
             {gameState === "go" && (
               <div style={styles.goArea}>
-                <p style={styles.goText}>ЖМИ!</p>
+                <p style={styles.goText}>{t.game.f1.go}</p>
                 <span style={styles.timeText}>{formatTime(showTime)}</span>
               </div>
             )}
@@ -232,21 +235,21 @@ export default function F1Game() {
               }}>
                 {score}
               </span>
-              <span style={styles.resultLabel}>очков</span>
+              <span style={styles.resultLabel}>{language === "ru" ? "очков" : "pts"}</span>
             </div>
             
             {reactionTime !== null && (
               <div style={styles.reactionTime}>
-                Время реакции: <strong>{formatTime(reactionTime)}</strong>
+                {t.game.f1.reaction}: <strong>{formatTime(reactionTime)}c</strong>
               </div>
             )}
 
             <div style={styles.totalScore}>
-              Всего очков: <strong>{totalScore}</strong>
+              {language === "ru" ? "Всего очков" : "Total"}: <strong>{totalScore}</strong>
             </div>
 
             <button onClick={nextRound} style={styles.nextBtn}>
-              {round >= maxRounds ? "завершить" : "следующий раунд"}
+              {round >= maxRounds ? t.game.f1.finish : t.game.f1.next}
             </button>
           </div>
         )}

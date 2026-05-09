@@ -3,9 +3,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Palette, ArrowLeft } from "lucide-react";
 import { useProfile } from "../../components/useProfile";
+import { useLanguage } from "../../components/LanguageProvider";
 
 export default function ColorGame() {
   const { saveScore } = useProfile();
+  const { t, language } = useLanguage();
   const [gameState, setGameState] = useState<"intro" | "countdown" | "show" | "guess" | "result">("intro");
   const [count, setCount] = useState(3);
   const [round, setRound] = useState(1);
@@ -134,28 +136,29 @@ export default function ColorGame() {
               <Palette size={40} style={{ color: "var(--accent-color)" }} />
             </div>
             <h1 style={{ ...styles.gameTitleText, color: "var(--accent-color)" }}>
-              Угадай цвет
+              {t.game.color.title}
             </h1>
             <p style={styles.introDesc}>
-              Запомни цвет, который появится на 5 секунд. Затем воспроизведи его 
-              с помощью ползунков RGB. Чем точнее — тем больше очков.
+              {language === "ru"
+                ? "Запомни цвет, который появится на 5 секунд. Затем воспроизведи его с помощью ползунков RGB. Чем точнее — тем больше очков."
+                : "Memorize the color that appears for 5 seconds. Then recreate it using RGB sliders. The more accurate — the more points."}
             </p>
             <div style={styles.rulesList}>
               <div style={styles.ruleItem}>
                 <span style={styles.ruleNumber}>5</span>
-                <span style={styles.ruleText}>раундов</span>
+                <span style={styles.ruleText}>{language === "ru" ? "раундов" : "rounds"}</span>
               </div>
               <div style={styles.ruleItem}>
                 <span style={styles.ruleNumber}>5 сек</span>
-                <span style={styles.ruleText}>запоминание</span>
+                <span style={styles.ruleText}>{language === "ru" ? "запоминание" : "memorize"}</span>
               </div>
               <div style={styles.ruleItem}>
                 <span style={styles.ruleNumber}>100</span>
-                <span style={styles.ruleText}>макс очков</span>
+                <span style={styles.ruleText}>{language === "ru" ? "макс очков" : "max pts"}</span>
               </div>
             </div>
             <button onClick={startGame} style={styles.playBtn}>
-              начать игру
+              {language === "ru" ? "начать игру" : "start game"}
             </button>
           </div>
         </main>
@@ -170,14 +173,14 @@ export default function ColorGame() {
           <button onClick={goToMain} className="icon-btn" style={styles.backBtn}>
             <ArrowLeft size={22} />
           </button>
-          <div style={styles.gameTitle}>Раунд {round}/{maxRounds}</div>
-          <div style={styles.scoreDisplay}>{totalScore} очков</div>
+          <div style={styles.gameTitle}>{t.game.color.round} {round}/{maxRounds}</div>
+          <div style={styles.scoreDisplay}>{totalScore} {language === "ru" ? "очков" : "pts"}</div>
         </header>
 
         <main style={styles.gameMain}>
           <div style={styles.countdownBox}>
             <div style={styles.countdownNumber}>{count}</div>
-            <p style={styles.countdownText}>Приготовься...</p>
+            <p style={styles.countdownText}>{language === "ru" ? "Приготовься..." : "Get ready..."}</p>
           </div>
         </main>
       </div>
@@ -191,8 +194,8 @@ export default function ColorGame() {
           <button onClick={goToMain} className="icon-btn" style={styles.backBtn}>
             <ArrowLeft size={22} />
           </button>
-          <div style={styles.gameTitle}>Раунд {round}/{maxRounds}</div>
-          <div style={styles.scoreDisplay}>{totalScore} очков</div>
+          <div style={styles.gameTitle}>{t.game.color.round} {round}/{maxRounds}</div>
+          <div style={styles.scoreDisplay}>{totalScore} {language === "ru" ? "очков" : "pts"}</div>
         </header>
 
         <main style={styles.gameMain}>
@@ -202,11 +205,11 @@ export default function ColorGame() {
               background: rgbToHex(targetColor.r, targetColor.g, targetColor.b),
             }} />
             <div className="timer-stack" style={styles.timerBox}>
-              <span style={styles.timerLabel}>Осталось</span>
+              <span style={styles.timerLabel}>{language === "ru" ? "Осталось" : "Left"}</span>
               <span style={styles.timerValueBlack}>{formatTime(showTime)}c</span>
             </div>
           </div>
-          <p style={styles.rememberText}>Запомни этот цвет</p>
+          <p style={styles.rememberText}>{t.game.color.memorize}</p>
         </main>
       </div>
     );
@@ -219,16 +222,16 @@ export default function ColorGame() {
           <button onClick={goToMain} className="icon-btn" style={styles.backBtn}>
             <ArrowLeft size={22} />
           </button>
-          <div style={styles.gameTitle}>Раунд {round}/{maxRounds}</div>
-          <div style={styles.scoreDisplay}>{totalScore} очков</div>
+          <div style={styles.gameTitle}>{t.game.color.round} {round}/{maxRounds}</div>
+          <div style={styles.scoreDisplay}>{totalScore} {language === "ru" ? "очков" : "pts"}</div>
         </header>
 
         <main style={styles.gameMain}>
           <div style={styles.guessCard}>
-            <p style={styles.questionText}>Воспроизведи цвет</p>
+            <p style={styles.questionText}>{t.game.color.match}</p>
             
             <div style={styles.bigPreviewSection}>
-              <div style={styles.previewLabel}>Твой цвет</div>
+              <div style={styles.previewLabel}>{language === "ru" ? "Твой цвет" : "Your color"}</div>
               <div style={{
                 ...styles.bigUserPreview,
                 background: rgbToHex(userColor.r, userColor.g, userColor.b),
@@ -275,7 +278,7 @@ export default function ColorGame() {
             </div>
 
             <button onClick={submitGuess} style={styles.submitBtn}>
-              проверить
+              {language === "ru" ? "проверить" : "check"}
             </button>
           </div>
         </main>
@@ -289,7 +292,7 @@ export default function ColorGame() {
         <button onClick={goToMain} className="icon-btn" style={styles.backBtn}>
           <ArrowLeft size={22} />
         </button>
-        <div style={styles.gameTitle}>Результат раунда</div>
+        <div style={styles.gameTitle}>{language === "ru" ? "Результат раунда" : "Round result"}</div>
         <div style={{ width: 44 }} />
       </header>
 
@@ -303,12 +306,12 @@ export default function ColorGame() {
             }}>
               {score}
             </span>
-            <span style={styles.resultLabel}>очков</span>
+            <span style={styles.resultLabel}>{language === "ru" ? "очков" : "pts"}</span>
           </div>
 
           <div style={styles.resultColors}>
             <div style={styles.resultColorCard}>
-              <div style={styles.resultColorLabel}>Правильный цвет</div>
+              <div style={styles.resultColorLabel}>{language === "ru" ? "Правильный цвет" : "Correct color"}</div>
               <div style={{
                 ...styles.bigColorResult,
                 background: rgbToHex(targetColor.r, targetColor.g, targetColor.b),
@@ -316,7 +319,7 @@ export default function ColorGame() {
               <div style={styles.resultRgb}>{rgbLabel(targetColor.r, targetColor.g, targetColor.b)}</div>
             </div>
             <div style={styles.resultColorCard}>
-              <div style={styles.resultColorLabel}>Твой цвет</div>
+              <div style={styles.resultColorLabel}>{language === "ru" ? "Твой цвет" : "Your color"}</div>
               <div style={{
                 ...styles.bigColorResult,
                 background: rgbToHex(userColor.r, userColor.g, userColor.b),
@@ -326,11 +329,11 @@ export default function ColorGame() {
           </div>
 
           <div style={styles.totalScore}>
-            Всего очков: <strong>{totalScore}</strong>
+            {language === "ru" ? "Всего очков" : "Total"}: <strong>{totalScore}</strong>
           </div>
 
           <button onClick={nextRound} style={styles.nextBtn}>
-            {round >= maxRounds ? "завершить" : "следующий раунд"}
+            {round >= maxRounds ? t.game.color.finish : t.game.color.next}
           </button>
         </div>
       </main>

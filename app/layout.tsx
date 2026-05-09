@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "./components/ThemeProvider";
+import { LanguageProvider } from "./components/LanguageProvider";
 
 export const metadata: Metadata = {
   title: "glazik",
-  description: "Мини-игры для глаза и реакции",
+  description: "Mini games for eye and reaction",
+  icons: "/favicon.svg",
 };
 
 export default function RootLayout({
@@ -13,9 +15,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
+    <html lang="en">
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <LanguageProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

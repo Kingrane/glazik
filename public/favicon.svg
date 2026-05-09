@@ -1,0 +1,14 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Внешний контур глаза (толстая линия для читаемости) -->
+  <path d="M10 60 Q 60 10 110 60 Q 60 110 10 60 Z" fill="#FFFFFF" stroke="#1A1B1E" stroke-width="8" stroke-linejoin="round"/>
+  
+  <g transform="translate(0, 2)">
+    <!-- RGB Радужка -->
+    <circle cx="52" cy="52" r="14" fill="#FF3B30" style="mix-blend-mode: multiply;"/>
+    <circle cx="68" cy="52" r="14" fill="#34C759" style="mix-blend-mode: multiply;"/>
+    <circle cx="60" cy="66" r="14" fill="#007AFF" style="mix-blend-mode: multiply;"/>
+  </g>
+  
+  <!-- Зрачок -->
+  <circle cx="60" cy="60" r="8" fill="#1A1B1E"/>
+</svg>

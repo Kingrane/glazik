@@ -3,43 +3,45 @@
 import { useState } from "react";
 import { Flower, Zap, Palette, Sun, Moon, Volume2, VolumeX, User } from "lucide-react";
 import { useTheme } from "./components/ThemeProvider";
-
-const games = [
-  {
-    id: "flowers",
-    icon: Flower,
-    title: "Цветочки",
-    description: "Угадай количество цветков на экране",
-    tag: "счёт",
-    color: "flowers",
-  },
-  {
-    id: "f1",
-    icon: Zap,
-    title: "Светофор F1",
-    description: "Проверь реакцию на красный свет",
-    tag: "реакция",
-    color: "f1",
-  },
-  {
-    id: "color",
-    icon: Palette,
-    title: "Угадай цвет",
-    description: "Воспроизведи показанный цвет",
-    tag: "память",
-    color: "color",
-  },
-];
-
-const navLinks = [
-  { label: "Цветочки", href: "/game/flowers" },
-  { label: "Светофор F1", href: "/game/f1" },
-  { label: "Угадай цвет", href: "/game/color" },
-];
+import { useLanguage } from "./components/LanguageProvider";
 
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
+  const { t, language } = useLanguage();
   const [sound, setSound] = useState(true);
+
+  const games = [
+    {
+      id: "flowers",
+      icon: Flower,
+      title: t.home.cards.flowers.title,
+      description: t.home.cards.flowers.description,
+      tag: t.home.cards.flowers.tag,
+      color: "flowers",
+    },
+    {
+      id: "f1",
+      icon: Zap,
+      title: t.home.cards.f1.title,
+      description: t.home.cards.f1.description,
+      tag: t.home.cards.f1.tag,
+      color: "f1",
+    },
+    {
+      id: "color",
+      icon: Palette,
+      title: t.home.cards.color.title,
+      description: t.home.cards.color.description,
+      tag: t.home.cards.color.tag,
+      color: "color",
+    },
+  ];
+
+  const navLinks = [
+    { label: t.nav.flowers, href: "/game/flowers" },
+    { label: t.nav.f1, href: "/game/f1" },
+    { label: t.nav.color, href: "/game/color" },
+  ];
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
@@ -59,7 +61,7 @@ export default function Home() {
             onClick={() => setSound(!sound)}
             className="icon-btn"
             style={styles.iconButton}
-            aria-label={sound ? "Выключить звук" : "Включить звук"}
+            aria-label={sound ? t.actions.soundOff : t.actions.soundOn}
           >
             {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
           </button>
@@ -67,11 +69,11 @@ export default function Home() {
             onClick={toggleTheme}
             className="icon-btn"
             style={styles.iconButton}
-            aria-label={theme === "light" ? "Тёмная тема" : "Светлая тема"}
+            aria-label={theme === "light" ? t.actions.darkTheme : t.actions.lightTheme}
           >
             {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
           </button>
-          <a href="/profile" className="icon-btn" style={styles.iconButton} aria-label="Профиль">
+          <a href="/profile" className="icon-btn" style={styles.iconButton} aria-label={t.actions.profile}>
             <User size={18} />
           </a>
         </div>
@@ -79,9 +81,9 @@ export default function Home() {
 
       <main className="main">
         <div style={styles.hero}>
-          <span className="hero-label">тренируй восприятие :D</span>
-          <h1 className="hero-title">мини-игры для глаза и реакции</h1>
-          <p className="hero-subtitle">5 раундов · очки · личный рекорд</p>
+          <span className="hero-label">{t.home.heroLabel}</span>
+          <h1 className="hero-title">{t.home.heroTitle}</h1>
+          <p className="hero-subtitle">{t.home.heroSubtitle}</p>
         </div>
 
         <div className="cards-grid">
@@ -116,13 +118,13 @@ export default function Home() {
       </main>
 
       <footer style={styles.footer}>
-        <a href="#">glazik</a>
+        <a href="#">{t.brand}</a>
         <span style={styles.footerDivider}>·</span>
-        <a href="#">о сайте</a>
+        <a href="#">{t.footer.about}</a>
         <span style={styles.footerDivider}>·</span>
-        <a href="#">конфиденц.</a>
+        <a href="#">{t.footer.privacy}</a>
         <span style={styles.footerDivider}>·</span>
-        <a href="https://github.com" target="_blank" rel="noopener">github</a>
+        <a href="https://github.com" target="_blank" rel="noopener">{t.footer.github}</a>
       </footer>
     </div>
   );

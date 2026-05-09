@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Flower, ArrowLeft, Plus, Minus } from "lucide-react";
 import { useProfile } from "../../components/useProfile";
+import { useLanguage } from "../../components/LanguageProvider";
 
 const flowerShapes = ["bloom-1", "bloom-2", "bloom-3", "bloom-4", "bloom-5"] as const;
 const flowerShadow = [
@@ -37,6 +38,7 @@ const FlowerSVG = ({ variant, size }: { variant: number; size: number }) => {
 
 export default function FlowersGame() {
   const { saveScore } = useProfile();
+  const { t, language } = useLanguage();
   const [gameState, setGameState] = useState<"intro" | "countdown" | "show" | "guess" | "result">("intro");
   const [count, setCount] = useState(3);
   const [round, setRound] = useState(1);
@@ -168,28 +170,29 @@ export default function FlowersGame() {
               <Flower size={40} style={{ color: "var(--accent-flowers)" }} />
             </div>
             <h1 style={{ ...styles.gameTitleText, color: "var(--accent-flowers)" }}>
-              Цветочки
+              {t.game.flowers.title}
             </h1>
             <p style={styles.introDesc}>
-              На экране появятся цветочки. Постарайся запомнить их количество.
-              Чем точнее твой ответ — тем больше очков.
+              {language === "ru" 
+                ? "На экране появятся цветочки. Постарайся запомнить их количество. Чем точнее твой ответ — тем больше очков."
+                : "Flowers will appear on screen. Try to remember how many. The more accurate your answer — the more points."}
             </p>
             <div style={styles.rulesList}>
               <div style={styles.ruleItem}>
                 <span style={styles.ruleNumber}>5</span>
-                <span style={styles.ruleText}>раундов</span>
+                <span style={styles.ruleText}>{language === "ru" ? "раундов" : "rounds"}</span>
               </div>
               <div style={styles.ruleItem}>
                 <span style={styles.ruleNumber}>10–300</span>
-                <span style={styles.ruleText}>цветков</span>
+                <span style={styles.ruleText}>{language === "ru" ? "цветков" : "flowers"}</span>
               </div>
               <div style={styles.ruleItem}>
                 <span style={styles.ruleNumber}>3 сек</span>
-                <span style={styles.ruleText}>время</span>
+                <span style={styles.ruleText}>{language === "ru" ? "время" : "time"}</span>
               </div>
             </div>
             <button onClick={startGame} style={styles.playBtn}>
-              начать игру
+              {language === "ru" ? "начать игру" : "start game"}
             </button>
           </div>
         </main>
@@ -204,14 +207,14 @@ export default function FlowersGame() {
           <button onClick={goToMain} className="icon-btn" style={styles.backBtn}>
             <ArrowLeft size={22} />
           </button>
-          <div style={styles.gameTitle}>Раунд {round}/{maxRounds}</div>
-          <div style={styles.scoreDisplay}>{totalScore} очков</div>
+          <div style={styles.gameTitle}>{t.game.flowers.round} {round}/{maxRounds}</div>
+          <div style={styles.scoreDisplay}>{totalScore} {language === "ru" ? "очков" : "pts"}</div>
         </header>
 
         <main style={styles.gameMain}>
           <div style={styles.countdownBox}>
             <div style={styles.countdownNumber}>{count}</div>
-            <p style={styles.countdownText}>Приготовься...</p>
+            <p style={styles.countdownText}>{language === "ru" ? "Приготовься..." : "Get ready..."}</p>
           </div>
         </main>
       </div>
@@ -249,7 +252,7 @@ export default function FlowersGame() {
               </div>
             </div>
             <div className="timer-stack" style={styles.timerBox}>
-              <span style={styles.timerLabel}>Осталось</span>
+              <span style={styles.timerLabel}>{language === "ru" ? "Осталось" : "Left"}</span>
               <span style={styles.timerValue}>{formatTime(showTime)}c</span>
             </div>
           </div>
@@ -271,7 +274,7 @@ export default function FlowersGame() {
 
         <main style={styles.gameMain}>
           <div style={styles.guessCard}>
-            <p style={styles.questionText}>Сколько цветочков ты видел?</p>
+            <p style={styles.questionText}>{language === "ru" ? "Сколько цветочков ты видел?" : "How many flowers did you see?"}</p>
 
             <div style={styles.guessControls}>
               <button
@@ -290,7 +293,7 @@ export default function FlowersGame() {
                   onChange={(e) => setUserGuess(Math.min(300, Math.max(10, parseInt(e.target.value) || 10)))}
                   style={styles.guessInput}
                 />
-                <span style={styles.guessLabel}>цветочков</span>
+                <span style={styles.guessLabel}>{language === "ru" ? "цветочков" : "flowers"}</span>
               </div>
 
               <button
@@ -317,7 +320,7 @@ export default function FlowersGame() {
             </div>
 
             <button onClick={submitGuess} style={styles.submitBtn}>
-              ответить
+              {t.game.flowers.submit}
             </button>
           </div>
         </main>
@@ -331,7 +334,7 @@ export default function FlowersGame() {
         <button onClick={goToMain} className="icon-btn" style={styles.backBtn}>
           <ArrowLeft size={22} />
         </button>
-        <div style={styles.gameTitle}>Результат раунда</div>
+        <div style={styles.gameTitle}>{language === "ru" ? "Результат раунда" : "Round result"}</div>
         <div style={{ width: 44 }} />
       </header>
 
@@ -345,20 +348,20 @@ export default function FlowersGame() {
             }}>
               {score}
             </span>
-            <span style={styles.resultLabel}>очков</span>
+            <span style={styles.resultLabel}>{language === "ru" ? "очков" : "pts"}</span>
           </div>
 
           <div style={styles.resultDetails}>
-            <p>Было: <strong>{flowerCount}</strong></p>
-            <p>Твой ответ: <strong>{userGuess}</strong></p>
+            <p>{language === "ru" ? "Было" : "Was"}: <strong>{flowerCount}</strong></p>
+            <p>{language === "ru" ? "Твой ответ" : "Your answer"}: <strong>{userGuess}</strong></p>
           </div>
 
           <div style={styles.totalScore}>
-            Всего очков: <strong>{totalScore}</strong>
+            {language === "ru" ? "Всего очков" : "Total"}: <strong>{totalScore}</strong>
           </div>
 
           <button onClick={nextRound} style={styles.nextBtn}>
-            {round >= maxRounds ? "завершить" : "следующий раунд"}
+            {round >= maxRounds ? t.game.flowers.finish : t.game.flowers.next}
           </button>
         </div>
       </main>

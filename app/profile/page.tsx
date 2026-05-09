@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ArrowLeft, User, Trophy, Clock } from "lucide-react";
+import { useLanguage } from "../components/LanguageProvider";
 
 interface ProfileData {
   nickname: string;
@@ -18,8 +19,9 @@ interface ProfileData {
 }
 
 export default function Profile() {
+  const { t, language } = useLanguage();
   const [data, setData] = useState<ProfileData>({
-    nickname: "Игрок",
+    nickname: language === "ru" ? "Игрок" : "Player",
     bestScores: { flowers: 0, f1: 0, color: 0 },
     lastRuns: [],
   });
@@ -35,7 +37,7 @@ export default function Profile() {
   }, []);
 
   const saveNickname = () => {
-    const newData = { ...data, nickname: nickname || "Игрок" };
+    const newData = { ...data, nickname: nickname || (language === "ru" ? "Игрок" : "Player") };
     setData(newData);
     localStorage.setItem("glazik-profile", JSON.stringify(newData));
     setEditing(false);
@@ -55,7 +57,7 @@ export default function Profile() {
         </button>
         <div style={styles.gameTitle}>
           <User size={22} />
-          <span>Профиль</span>
+          <span>{t.profile.title}</span>
         </div>
         <div style={{ width: 40 }} />
       </header>
@@ -73,17 +75,17 @@ export default function Profile() {
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
                 style={styles.nameInput}
-                placeholder="Введи имя"
+                placeholder={language === "ru" ? "Введи имя" : "Enter name"}
                 autoFocus
               />
               <button onClick={saveNickname} style={styles.saveBtn}>
-                сохранить
+                {t.profile.save}
               </button>
             </div>
           ) : (
             <div style={styles.nameRow} onClick={() => setEditing(true)}>
               <h2 style={styles.nickname}>{data.nickname}</h2>
-              <span style={styles.editHint}>изменить</span>
+              <span style={styles.editHint}>{language === "ru" ? "изменить" : "edit"}</span>
             </div>
           )}
         </div>
@@ -91,24 +93,24 @@ export default function Profile() {
         <div style={styles.statsSection}>
           <h3 style={styles.sectionTitle}>
             <Trophy size={18} />
-            Личные рекорды
+            {t.profile.bestScores}
           </h3>
           
           <div style={styles.statsGrid}>
             <div style={styles.statCard}>
-              <span style={styles.statLabel}>Цветочки</span>
+              <span style={styles.statLabel}>{t.nav.flowers}</span>
               <span style={styles.statValue}>{data.bestScores.flowers}</span>
             </div>
             <div style={styles.statCard}>
-              <span style={styles.statLabel}>Светофор F1</span>
+              <span style={styles.statLabel}>{t.nav.f1}</span>
               <span style={styles.statValue}>{data.bestScores.f1}</span>
             </div>
             <div style={styles.statCard}>
-              <span style={styles.statLabel}>Цвет</span>
+              <span style={styles.statLabel}>{t.nav.color}</span>
               <span style={styles.statValue}>{data.bestScores.color}</span>
             </div>
             <div style={{ ...styles.statCard, background: "var(--accent-color-bg)" }}>
-              <span style={{ ...styles.statLabel, color: "var(--accent-color)" }}>Всего</span>
+              <span style={{ ...styles.statLabel, color: "var(--accent-color)" }}>{language === "ru" ? "Всего" : "Total"}</span>
               <span style={{ ...styles.statValue, color: "var(--accent-color)" }}>{totalBest}</span>
             </div>
           </div>
@@ -118,14 +120,14 @@ export default function Profile() {
           <div style={styles.historySection}>
             <h3 style={styles.sectionTitle}>
               <Clock size={18} />
-              Последние игры
+              {t.profile.lastRuns}
             </h3>
             
             <div style={styles.historyList}>
               {data.lastRuns.slice(0, 10).map((run, i) => (
                 <div key={i} style={styles.historyItem}>
                   <span style={styles.historyGame}>{run.game}</span>
-                  <span style={styles.historyScore}>{run.score} очков</span>
+                  <span style={styles.historyScore}>{run.score} {language === "ru" ? "очков" : "pts"}</span>
                   <span style={styles.historyDate}>{run.date}</span>
                 </div>
               ))}
@@ -135,7 +137,7 @@ export default function Profile() {
 
         {data.lastRuns.length === 0 && (
           <div style={styles.emptyState}>
-            Пока нет сыгранных игр. Начни играть!
+            {language === "ru" ? "Пока нет сыгранных игр. Начни играть!" : "No games played yet. Start playing!"}
           </div>
         )}
       </main>
